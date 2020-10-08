@@ -67,6 +67,7 @@ public class NewBehaviourScript : MonoBehaviour
         else
         {
             //direction = 0;
+			//MAMO
         }
         if (inputX == 0 && inputY == 0)
         {
