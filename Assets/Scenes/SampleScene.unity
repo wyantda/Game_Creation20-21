@@ -270,8 +270,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1458787835
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4b4b48fe6b6d71745aeed77519fe64a4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -314,6 +314,8 @@ GameObject:
   - component: {fileID: 1594048158}
   - component: {fileID: 1594048164}
   - component: {fileID: 1594048163}
+  - component: {fileID: 1594048166}
+  - component: {fileID: 1594048167}
   m_Layer: 0
   m_Name: mettaur
   m_TagString: Player
@@ -494,6 +496,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec216c3413a56142bc2e2bd27e870ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1594048166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594048157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c97754da801cba48a1dc8236a2df7db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 100
+--- !u!114 &1594048167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594048157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: 0}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: 
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &2099042510
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,7 +621,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.34, y: 0.34}
+  m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
 --- !u!114 &2099042514
 MonoBehaviour:
@@ -593,6 +638,7 @@ MonoBehaviour:
   moverange: 0
   movespeed: 4
   direction: 0
+  hitrange: 1.35
 --- !u!212 &2099042515
 SpriteRenderer:
   m_ObjectHideFlags: 0
