@@ -11,6 +11,10 @@ public class BasicEnemy1 : MonoBehaviour
     public int direction;
     private Transform target = null;
     Vector2 movedirs;
+    bool moveable = true;
+    float cooldown = 3;
+    float timehold = 0;
+    public float hitrange = 1.35f;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,70 +26,85 @@ public class BasicEnemy1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (target != null)
+        if (moveable)
         {
-            if (Mathf.Abs(this.transform.position.x - target.position.x) > 1)
+            if (target != null)
             {
-                movedirs.x = target.position.x - transform.position.x;
+                if (Mathf.Abs(this.transform.position.x - target.position.x) > 1)
+                {
+                    movedirs.x = target.position.x - transform.position.x;
+                }
+                else
+                {
+                    movedirs.x = 0;
+                }
+
+                if (Mathf.Abs(this.transform.position.y - target.position.y) > 1)
+                {
+                    movedirs.y = target.position.y - transform.position.y;
+                }
+                else if (this.transform.position.y > target.position.y)
+                {
+                    movedirs.y = target.position.y - transform.position.y;
+                }
+                else
+                {
+                    movedirs.y = 0;
+                }
+                float distance = Mathf.Abs(Vector2.Distance(new Vector2(0, 0), movedirs));
+                if (distance != 0)
+                {
+                    movedirs.x /= Mathf.Abs(Vector2.Distance(new Vector2(0, 0), movedirs));
+                    movedirs.y /= Mathf.Abs(Vector2.Distance(new Vector2(0, 0), movedirs));
+                }
+                if (Mathf.Abs(Vector2.Distance(transform.position, target.position)) < hitrange)
+                {
+                    moveable = false;
+                    timehold = Time.time;
+                    target.SendMessageUpwards("Hit",10);
+                }
             }
-            else
+            else if (Vector2.Distance(spawnPoint, transform.position) < 1)
             {
                 movedirs.x = 0;
-            }
-
-            if (Mathf.Abs(this.transform.position.y - target.position.y) > 1)
-            {
-                movedirs.y = target.position.y - transform.position.y;
-            }
-            else if (this.transform.position.y > target.position.y)
-            {
-                movedirs.y = target.position.y - transform.position.y;
-            }
-            else
-            {
                 movedirs.y = 0;
             }
-            float distance = Mathf.Abs(Vector2.Distance(new Vector2(0, 0), movedirs));
-            if (distance != 0)
-            {
-                movedirs.x /= Mathf.Abs(Vector2.Distance(new Vector2(0, 0), movedirs));
-                movedirs.y /= Mathf.Abs(Vector2.Distance(new Vector2(0, 0), movedirs));
-            }
-        }
-        else if (Vector2.Distance(spawnPoint, transform.position) < 1)
-        {
-            movedirs.x = 0;
-            movedirs.y = 0;
-        }
-        else
-        {
-            if (Mathf.Abs(transform.position.x - spawnPoint.x) > 1)
-            {
-                movedirs.x = spawnPoint.x - transform.position.x;
-            }
             else
             {
-                movedirs.x = 0;
+                if (Mathf.Abs(transform.position.x - spawnPoint.x) > 1)
+                {
+                    movedirs.x = spawnPoint.x - transform.position.x;
+                }
+                else
+                {
+                    movedirs.x = 0;
+                }
+
+                if (Mathf.Abs(transform.position.y - spawnPoint.y) > 1)
+                {
+                    movedirs.y = spawnPoint.y - transform.position.y;
+                }
+                else
+                {
+                    movedirs.y = 0;
+                }
+                float distance = Mathf.Abs(Vector2.Distance(new Vector2(0, 0), movedirs));
+                if (distance != 0)
+                {
+                    movedirs.x /= Mathf.Abs(Vector2.Distance(new Vector2(0, 0), movedirs));
+                    movedirs.y /= Mathf.Abs(Vector2.Distance(new Vector2(0, 0), movedirs));
+                }
+
             }
 
-            if (Mathf.Abs(transform.position.y - spawnPoint.y) > 1)
-            {
-                movedirs.y = spawnPoint.y - transform.position.y;
-            }
-            else
-            {
-                movedirs.y = 0;
-            }
-            float distance = Mathf.Abs(Vector2.Distance(new Vector2(0, 0), movedirs));
-            if (distance != 0)
-            {
-                movedirs.x /= Mathf.Abs(Vector2.Distance(new Vector2(0, 0), movedirs));
-                movedirs.y /= Mathf.Abs(Vector2.Distance(new Vector2(0, 0), movedirs));
-            }
-
+            body.velocity = new Vector2(movedirs.x * movespeed, movedirs.y * movespeed);
         }
-
-        body.velocity = new Vector2(movedirs.x * movespeed, movedirs.y * movespeed);
+        else {
+            body.velocity = new Vector2(0,0);
+            if (Time.time > (timehold + cooldown)) {
+                moveable = true;
+            }
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
