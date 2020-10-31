@@ -31,6 +31,7 @@ public class FollowPlayer : MonoBehaviour
     {
 
         GetComponent<PlayerMovement>().enabled = true;
+        GetComponent<PlayerMovement>().hurtbox.enabled = true;
 
     }
 

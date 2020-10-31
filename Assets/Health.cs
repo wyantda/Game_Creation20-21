@@ -18,6 +18,11 @@ public class Health : MonoBehaviour
     }
     void Hit(float damage) {
         HP -= damage;
+        if (HP <= 0) {
+            Gameover();
+        }
+    }
+    void Gameover() {
 
     }
 }

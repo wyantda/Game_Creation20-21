@@ -21,12 +21,13 @@ public class BasicEnemy : MonoBehaviour
     Vector2 knockBackVector;
 
     public float attackCooldown;
-    float attackCooldownTimer;
+    public float attackCooldownTimer;
 
     float hitStunTime;
 
-    bool chasing;
-    bool attackSuccess;
+    public bool chasing;
+    public bool attackSuccess;
+    public bool blocked;
 
     PlayerMovement playerMovement;
 
@@ -101,14 +102,25 @@ public class BasicEnemy : MonoBehaviour
         }
         else
         {
-            attackCooldownTimer -= Time.deltaTime;
-            rb.velocity = Vector2.zero;
-            if (attackCooldownTimer <= 0)
+            if (!blocked)
             {
-                attackCooldownTimer = attackCooldown;
-                attackSuccess = false;
+                attackCooldownTimer -= Time.deltaTime;
+                rb.velocity = Vector2.zero;
+                if (attackCooldownTimer <= 0)
+                {
+                    attackCooldownTimer = attackCooldown;
+                    attackSuccess = false;
+                }
             }
-            
+            else {
+                attackCooldownTimer -= Time.deltaTime;
+                if (attackCooldownTimer <= 0)
+                {
+                    attackCooldownTimer = attackCooldown;
+                    attackSuccess = false;
+                    blocked = false;
+                }
+            }
         }
         
     }
@@ -151,16 +163,20 @@ public class BasicEnemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        attackSuccess = true;
+        if (col.gameObject.tag == "Player")
+        {
+            attackSuccess = true;
 
-        playerMovement = col.gameObject.GetComponent<PlayerMovement>();
-        playerMovement.StunTimer += hitStunTime;
-        playerMovement.Stunned = true;
+            playerMovement = col.gameObject.GetComponent<PlayerMovement>();
+            playerMovement.StunTimer += hitStunTime;
+            playerMovement.Stunned = true;
 
-        KnockBack(col.gameObject.GetComponent<Rigidbody2D>());
+            KnockBack(col.gameObject.GetComponent<Rigidbody2D>());
 
-        print("booped");
-        
+            col.gameObject.SendMessage("Hit", 10.0);
+
+            print("booped");
+        }
     }
 
 }

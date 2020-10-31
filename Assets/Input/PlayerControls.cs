@@ -41,6 +41,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Block"",
+                    ""type"": ""Button"",
+                    ""id"": ""3074e13c-983e-409b-8bd7-00926d9bab57"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -120,6 +128,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Swap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bf49e47f-5536-4611-8ac8-e2440341c247"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -131,6 +150,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Land_MoveX = m_Land.FindAction("MoveX", throwIfNotFound: true);
         m_Land_MoveY = m_Land.FindAction("MoveY", throwIfNotFound: true);
         m_Land_Swap = m_Land.FindAction("Swap", throwIfNotFound: true);
+        m_Land_Block = m_Land.FindAction("Block", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -183,6 +203,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Land_MoveX;
     private readonly InputAction m_Land_MoveY;
     private readonly InputAction m_Land_Swap;
+    private readonly InputAction m_Land_Block;
     public struct LandActions
     {
         private @PlayerControls m_Wrapper;
@@ -190,6 +211,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @MoveX => m_Wrapper.m_Land_MoveX;
         public InputAction @MoveY => m_Wrapper.m_Land_MoveY;
         public InputAction @Swap => m_Wrapper.m_Land_Swap;
+        public InputAction @Block => m_Wrapper.m_Land_Block;
         public InputActionMap Get() { return m_Wrapper.m_Land; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -208,6 +230,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Swap.started -= m_Wrapper.m_LandActionsCallbackInterface.OnSwap;
                 @Swap.performed -= m_Wrapper.m_LandActionsCallbackInterface.OnSwap;
                 @Swap.canceled -= m_Wrapper.m_LandActionsCallbackInterface.OnSwap;
+                @Block.started -= m_Wrapper.m_LandActionsCallbackInterface.OnBlock;
+                @Block.performed -= m_Wrapper.m_LandActionsCallbackInterface.OnBlock;
+                @Block.canceled -= m_Wrapper.m_LandActionsCallbackInterface.OnBlock;
             }
             m_Wrapper.m_LandActionsCallbackInterface = instance;
             if (instance != null)
@@ -221,6 +246,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Swap.started += instance.OnSwap;
                 @Swap.performed += instance.OnSwap;
                 @Swap.canceled += instance.OnSwap;
+                @Block.started += instance.OnBlock;
+                @Block.performed += instance.OnBlock;
+                @Block.canceled += instance.OnBlock;
             }
         }
     }
@@ -230,5 +258,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnMoveX(InputAction.CallbackContext context);
         void OnMoveY(InputAction.CallbackContext context);
         void OnSwap(InputAction.CallbackContext context);
+        void OnBlock(InputAction.CallbackContext context);
     }
 }
